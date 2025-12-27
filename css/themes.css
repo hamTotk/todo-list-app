@@ -1,0 +1,241 @@
+/* ==========================================
+   THEME SYSTEM - Light & Dark Mode
+   ==========================================
+   Clean & Modern with Teal/Green Accents
+   ========================================== */
+
+:root {
+  /* Light Theme - Fresh & Natural */
+  --bg-primary: #F0FDFA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E6FFFA;
+  --bg-elevated: #FFFFFF;
+  --bg-gradient: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  --bg-gradient-subtle: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+
+  --text-primary: #134e4a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-inverse: #FFFFFF;
+
+  /* Primary Gradient Colors */
+  --accent-primary: #0d9488;
+  --accent-secondary: #14b8a6;
+  --accent-gradient: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+
+  /* Multi-color Accents for Visual Interest */
+  --accent-blue: #0891b2;
+  --accent-green: #059669;
+  --accent-teal: #0d9488;
+  --accent-emerald: #10b981;
+  --accent-cyan: #06b6d4;
+  --accent-mint: #2dd4bf;
+
+  /* Gradient Variations */
+  --gradient-ocean: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  --gradient-teal: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-mint: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+
+  --border-color: rgba(13, 148, 136, 0.2);
+  --border-light: rgba(13, 148, 136, 0.1);
+
+  --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.08);
+  --shadow-md: 0 4px 16px rgba(13, 148, 136, 0.12);
+  --shadow-lg: 0 8px 32px rgba(13, 148, 136, 0.16);
+  --shadow-xl: 0 12px 48px rgba(13, 148, 136, 0.2);
+
+  /* Priority Colors - Light Mode */
+  --priority-high: #f56565;
+  --priority-high-bg: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+  --priority-high-light: #fff5f5;
+
+  --priority-medium: #ed8936;
+  --priority-medium-bg: linear-gradient(135deg, #fbd38d 0%, #ed8936 100%);
+  --priority-medium-light: #fffaf0;
+
+  --priority-low: #38b2ac;
+  --priority-low-bg: linear-gradient(135deg, #4fd1c5 0%, #38b2ac 100%);
+  --priority-low-light: #e6fffa;
+
+  /* Due Date Status Colors - Light Mode */
+  --status-overdue: #f56565;
+  --status-overdue-bg: #fff5f5;
+  --status-overdue-gradient: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+
+  --status-today: #ed8936;
+  --status-today-bg: #fffaf0;
+  --status-today-gradient: linear-gradient(135deg, #fbd38d 0%, #ed8936 100%);
+
+  --status-tomorrow: #ecc94b;
+  --status-tomorrow-bg: #fffff0;
+  --status-tomorrow-gradient: linear-gradient(135deg, #f6e05e 0%, #ecc94b 100%);
+
+  --status-upcoming: #48bb78;
+  --status-upcoming-bg: #f0fff4;
+  --status-upcoming-gradient: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+
+  /* UI State Colors */
+  --success: #48bb78;
+  --success-bg: #f0fff4;
+  --warning: #ed8936;
+  --warning-bg: #fffaf0;
+  --error: #f56565;
+  --error-bg: #fff5f5;
+  --info: #4299e1;
+  --info-bg: #ebf8ff;
+}
+
+:root[data-theme="dark"] {
+  /* Dark Theme - Deep with Teal/Green Accents */
+  --bg-primary: #0f1419;
+  --bg-secondary: #1a1f2e;
+  --bg-tertiary: #252b3b;
+  --bg-elevated: #2d3548;
+  --bg-gradient: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  --bg-gradient-subtle: linear-gradient(135deg, #1a1f2e 0%, #252b3b 100%);
+
+  --text-primary: #f0fdfa;
+  --text-secondary: #99f6e4;
+  --text-tertiary: #5eead4;
+  --text-inverse: #0f1419;
+
+  --accent-primary: #14b8a6;
+  --accent-secondary: #2dd4bf;
+  --accent-gradient: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+
+  --accent-blue: #22d3ee;
+  --accent-green: #34d399;
+  --accent-teal: #2dd4bf;
+  --accent-emerald: #6ee7b7;
+  --accent-cyan: #67e8f9;
+  --accent-mint: #5eead4;
+
+  --gradient-ocean: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+  --gradient-teal: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+  --gradient-emerald: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  --gradient-mint: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+
+  --border-color: rgba(45, 212, 191, 0.3);
+  --border-light: rgba(45, 212, 191, 0.15);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.6);
+
+  --priority-high: #f87171;
+  --priority-high-bg: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+  --priority-high-light: #3f1d1d;
+
+  --priority-medium: #fb923c;
+  --priority-medium-bg: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+  --priority-medium-light: #3f2a1d;
+
+  --priority-low: #2dd4bf;
+  --priority-low-bg: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+  --priority-low-light: #1d3f3a;
+
+  --status-overdue: #f87171;
+  --status-overdue-bg: #3f1d1d;
+  --status-overdue-gradient: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+
+  --status-today: #fb923c;
+  --status-today-bg: #3f2a1d;
+  --status-today-gradient: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+
+  --status-tomorrow: #fbbf24;
+  --status-tomorrow-bg: #3f351d;
+  --status-tomorrow-gradient: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+
+  --status-upcoming: #34d399;
+  --status-upcoming-bg: #1d3f30;
+  --status-upcoming-gradient: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+
+  --success: #34d399;
+  --success-bg: #1d3f30;
+  --warning: #fb923c;
+  --warning-bg: #3f2a1d;
+  --error: #f87171;
+  --error-bg: #3f1d1d;
+  --info: #60a5fa;
+  --info-bg: #1d2d3f;
+}
+
+/* System Preference Detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a1f2e;
+    --bg-tertiary: #252b3b;
+    --bg-elevated: #2d3548;
+    --bg-gradient: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    --bg-gradient-subtle: linear-gradient(135deg, #1a1f2e 0%, #252b3b 100%);
+
+    --text-primary: #f0fdfa;
+    --text-secondary: #99f6e4;
+    --text-tertiary: #5eead4;
+    --text-inverse: #0f1419;
+
+    --accent-primary: #14b8a6;
+    --accent-secondary: #2dd4bf;
+    --accent-gradient: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+
+    --accent-blue: #22d3ee;
+    --accent-green: #34d399;
+    --accent-teal: #2dd4bf;
+    --accent-emerald: #6ee7b7;
+    --accent-cyan: #67e8f9;
+    --accent-mint: #5eead4;
+
+    --gradient-ocean: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    --gradient-teal: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+    --gradient-emerald: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    --gradient-mint: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+
+    --border-color: rgba(45, 212, 191, 0.3);
+    --border-light: rgba(45, 212, 191, 0.15);
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.6);
+
+    --priority-high: #f87171;
+    --priority-high-bg: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+    --priority-high-light: #3f1d1d;
+
+    --priority-medium: #fb923c;
+    --priority-medium-bg: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+    --priority-medium-light: #3f2a1d;
+
+    --priority-low: #2dd4bf;
+    --priority-low-bg: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+    --priority-low-light: #1d3f3a;
+
+    --status-overdue: #f87171;
+    --status-overdue-bg: #3f1d1d;
+    --status-overdue-gradient: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+
+    --status-today: #fb923c;
+    --status-today-bg: #3f2a1d;
+    --status-today-gradient: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+
+    --status-tomorrow: #fbbf24;
+    --status-tomorrow-bg: #3f351d;
+    --status-tomorrow-gradient: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+
+    --status-upcoming: #34d399;
+    --status-upcoming-bg: #1d3f30;
+    --status-upcoming-gradient: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+
+    --success: #34d399;
+    --success-bg: #1d3f30;
+    --warning: #fb923c;
+    --warning-bg: #3f2a1d;
+    --error: #f87171;
+    --error-bg: #3f1d1d;
+    --info: #22d3ee;
+    --info-bg: #1d2d3f;
+  }
+}

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="高機能なTODOリスト管理アプリケーション - サブタスク、繰り返しタスク、カテゴリ分類に対応">
+    <title>TODOリスト - タスク管理アプリ</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-content">
+            <h1>✨ TODO</h1>
+            <div class="header-actions">
+                <button id="theme-toggle" class="btn-icon" aria-label="テーマ切り替え" title="ダークモード切り替え">
+                    <span class="theme-icon">🌙</span>
+                    <span class="btn-label">テーマ</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテナ -->
+    <div class="container">
+        <!-- サイドバー -->
+        <aside class="sidebar" role="complementary">
+            <!-- 統計セクション -->
+            <section class="sidebar-section">
+                <h2>統計</h2>
+                <!-- 基本統計 -->
+                <div class="stats stats-basic">
+                    <div class="stat-item">
+                        <span class="stat-label">全体</span>
+                        <span class="stat-value" id="stat-total">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">未完了</span>
+                        <span class="stat-value" id="stat-incomplete">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">完了</span>
+                        <span class="stat-value" id="stat-complete">0</span>
+                    </div>
+                </div>
+
+                <!-- 詳細統計（折りたたみ可能） -->
+                <details class="stats-details">
+                    <summary>詳細統計</summary>
+                    <div class="stats stats-detailed">
+                        <!-- 期限関連 -->
+                        <div class="stat-group">
+                            <h3 class="stat-group-title">期限</h3>
+                            <div class="stat-item stat-overdue">
+                                <span class="stat-label">⚠️ 期限切れ</span>
+                                <span class="stat-value" id="stat-overdue">0</span>
+                            </div>
+                            <div class="stat-item stat-today">
+                                <span class="stat-label">📅 今日</span>
+                                <span class="stat-value" id="stat-today">0</span>
+                            </div>
+                            <div class="stat-item stat-tomorrow">
+                                <span class="stat-label">📆 明日</span>
+                                <span class="stat-value" id="stat-tomorrow">0</span>
+                            </div>
+                        </div>
+
+                        <!-- タスクタイプ -->
+                        <div class="stat-group">
+                            <h3 class="stat-group-title">タスクタイプ</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">🔄 繰り返し</span>
+                                <span class="stat-value" id="stat-recurring">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">📋 サブタスク付き</span>
+                                <span class="stat-value" id="stat-with-subtasks">0</span>
+                            </div>
+                        </div>
+
+                        <!-- 優先度別 -->
+                        <div class="stat-group">
+                            <h3 class="stat-group-title">優先度別（未完了）</h3>
+                            <div class="stat-item stat-priority-high">
+                                <span class="stat-label">🔴 高</span>
+                                <span class="stat-value" id="stat-priority-high">0</span>
+                            </div>
+                            <div class="stat-item stat-priority-medium">
+                                <span class="stat-label">🟡 中</span>
+                                <span class="stat-value" id="stat-priority-medium">0</span>
+                            </div>
+                            <div class="stat-item stat-priority-low">
+                                <span class="stat-label">🟢 低</span>
+                                <span class="stat-value" id="stat-priority-low">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- フィルターセクション -->
+            <section class="sidebar-section">
+                <h2>フィルター</h2>
+
+                <div class="filter-group">
+                    <label>タグ</label>
+                    <div id="tag-filter-container" class="tag-filter-container">
+                        <!-- タグはJSで動的に追加 -->
+                        <p class="no-tags-message">タグがありません</p>
+                    </div>
+                    <button id="btn-manage-tags" class="btn-manage-tags">タグを管理</button>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-priority">優先度</label>
+                    <select id="filter-priority" class="filter-select" aria-label="優先度でフィルター">
+                        <option value="">すべて</option>
+                        <option value="high">高</option>
+                        <option value="medium">中</option>
+                        <option value="low">低</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>
+                        <input type="checkbox" id="filter-show-completed" checked aria-label="完了済みタスクを表示">
+                        完了済みを表示
+                    </label>
+                </div>
+            </section>
+
+            <!-- ソートセクション -->
+            <section class="sidebar-section">
+                <h2>ソート</h2>
+
+                <div class="filter-group">
+                    <label for="sort-by">並び順</label>
+                    <select id="sort-by" class="filter-select" aria-label="並び順を選択">
+                        <option value="createdAt">作成日時</option>
+                        <option value="dueDate">期限</option>
+                        <option value="priority">優先度</option>
+                        <option value="title">タイトル</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="sort-order">順序</label>
+                    <select id="sort-order" class="filter-select" aria-label="順序を選択">
+                        <option value="desc">降順</option>
+                        <option value="asc">昇順</option>
+                    </select>
+                </div>
+            </section>
+        </aside>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content" role="main">
+            <!-- タスクグループタブ -->
+            <div class="task-groups-container">
+                <button id="btn-show-all" class="btn-show-all" aria-label="すべてのタスクを表示">
+                    すべて
+                </button>
+                <div id="task-group-tabs" class="task-group-tabs" role="tablist">
+                    <!-- タブはJSで動的に追加される -->
+                </div>
+                <button id="btn-add-group" class="btn-add-group" aria-label="新しいグループを追加">
+                    + グループ追加
+                </button>
+            </div>
+
+            <div class="main-header">
+                <h2 id="current-group-title">タスク一覧</h2>
+                <button id="btn-add-todo" class="btn-primary" aria-label="新しいタスクを追加">
+                    + 新しいタスク
+                </button>
+            </div>
+
+            <!-- TODOリスト -->
+            <div id="todo-list" class="todo-list" role="list">
+                <!-- TODOアイテムがJSで動的に追加される -->
+            </div>
+
+            <!-- 空の状態 -->
+            <div id="empty-state" class="empty-state">
+                <p>タスクがありません</p>
+                <p class="empty-state-hint">「新しいタスク」ボタンをクリックして追加してください</p>
+            </div>
+
+            <!-- フィルター結果なし -->
+            <div id="filter-empty-state" class="empty-state filter-empty hidden">
+                <p>条件に一致するタスクがありません</p>
+                <p class="empty-state-hint">フィルター条件を変更してください</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- フッター -->
+    <footer class="footer" role="contentinfo">
+        <p>&copy; 2025 TODOリストアプリ</p>
+    </footer>
+
+    <!-- TODOモーダル -->
+    <div id="todo-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">新しいタスク</h2>
+                <button id="modal-close" class="btn-close" aria-label="モーダルを閉じる">&times;</button>
+            </div>
+
+            <form id="todo-form" class="todo-form">
+                <!-- エラーメッセージ表示エリア -->
+                <div id="form-error" class="form-error hidden" role="alert">
+                    <span class="error-icon">⚠️</span>
+                    <span id="form-error-message"></span>
+                </div>
+
+                <!-- タイトル -->
+                <div class="form-group">
+                    <label for="todo-title">
+                        タイトル <span class="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="todo-title"
+                        name="title"
+                        class="form-input"
+                        required
+                        maxlength="100"
+                        placeholder="タスクのタイトルを入力"
+                        aria-required="true"
+                    >
+                    <span id="title-error" class="field-error hidden"></span>
+                </div>
+
+                <!-- 説明 -->
+                <div class="form-group">
+                    <label for="todo-description">説明</label>
+                    <textarea
+                        id="todo-description"
+                        name="description"
+                        class="form-textarea"
+                        rows="4"
+                        maxlength="500"
+                        placeholder="詳細な説明（オプション）"
+                    ></textarea>
+                </div>
+
+                <!-- 優先度 -->
+                <div class="form-group">
+                    <label for="todo-priority">優先度</label>
+                    <select id="todo-priority" name="priority" class="form-select">
+                        <option value="low">低</option>
+                        <option value="medium" selected>中</option>
+                        <option value="high">高</option>
+                    </select>
+                </div>
+
+                <!-- 期限 -->
+                <div class="form-group">
+                    <label for="todo-due-date">期限</label>
+                    <input
+                        type="datetime-local"
+                        id="todo-due-date"
+                        name="dueDate"
+                        class="form-input"
+                    >
+                </div>
+
+                <!-- タグ -->
+                <div class="form-group">
+                    <label>タグ</label>
+                    <div id="todo-tags-container" class="todo-tags-container">
+                        <!-- タグチェックボックスはJSで動的に追加 -->
+                    </div>
+                    <div class="new-tag-inline">
+                        <input
+                            type="text"
+                            id="new-tag-input"
+                            class="form-input"
+                            placeholder="新しいタグを追加"
+                            maxlength="20"
+                        >
+                        <button type="button" id="btn-add-tag-inline" class="btn-add-tag-inline">追加</button>
+                    </div>
+                </div>
+
+                <!-- 繰り返し設定 -->
+                <div class="form-group recurrence-section">
+                    <label class="recurrence-toggle">
+                        <input type="checkbox" id="recurrence-enabled" name="recurrenceEnabled">
+                        <span>繰り返しタスク</span>
+                    </label>
+
+                    <div id="recurrence-options" class="recurrence-options hidden">
+                        <!-- 繰り返しタイプ -->
+                        <div class="form-group">
+                            <label for="recurrence-type">繰り返しパターン</label>
+                            <select id="recurrence-type" name="recurrenceType" class="form-select">
+                                <option value="daily">毎日</option>
+                                <option value="weekly">毎週</option>
+                                <option value="monthly">毎月</option>
+                                <option value="custom">カスタム間隔</option>
+                                <option value="weekdays">曜日指定</option>
+                            </select>
+                        </div>
+
+                        <!-- カスタム間隔 -->
+                        <div id="custom-interval-group" class="form-group hidden">
+                            <label for="recurrence-interval">間隔（日）</label>
+                            <input
+                                type="number"
+                                id="recurrence-interval"
+                                name="recurrenceInterval"
+                                class="form-input"
+                                min="1"
+                                value="1"
+                            >
+                        </div>
+
+                        <!-- 曜日選択 -->
+                        <div id="weekdays-group" class="form-group hidden">
+                            <label>曜日を選択</label>
+                            <div class="weekday-checkboxes">
+                                <label><input type="checkbox" name="weekday" value="0"> 日</label>
+                                <label><input type="checkbox" name="weekday" value="1"> 月</label>
+                                <label><input type="checkbox" name="weekday" value="2"> 火</label>
+                                <label><input type="checkbox" name="weekday" value="3"> 水</label>
+                                <label><input type="checkbox" name="weekday" value="4"> 木</label>
+                                <label><input type="checkbox" name="weekday" value="5"> 金</label>
+                                <label><input type="checkbox" name="weekday" value="6"> 土</label>
+                            </div>
+                        </div>
+
+                        <!-- 終了条件 -->
+                        <div class="form-group">
+                            <label for="end-condition-type">終了条件</label>
+                            <select id="end-condition-type" name="endConditionType" class="form-select">
+                                <option value="never">無期限</option>
+                                <option value="count">回数指定</option>
+                                <option value="date">日付指定</option>
+                            </select>
+                        </div>
+
+                        <!-- 回数指定 -->
+                        <div id="end-count-group" class="form-group hidden">
+                            <label for="end-condition-count">繰り返し回数</label>
+                            <input
+                                type="number"
+                                id="end-condition-count"
+                                name="endConditionCount"
+                                class="form-input"
+                                min="1"
+                                value="5"
+                            >
+                        </div>
+
+                        <!-- 日付指定 -->
+                        <div id="end-date-group" class="form-group hidden">
+                            <label for="end-condition-date">終了日</label>
+                            <input
+                                type="date"
+                                id="end-condition-date"
+                                name="endConditionDate"
+                                class="form-input"
+                            >
+                        </div>
+
+                        <!-- 完了時の挙動 -->
+                        <div class="form-group">
+                            <label for="completion-behavior">完了時の挙動</label>
+                            <select id="completion-behavior" name="completionBehavior" class="form-select">
+                                <option value="createNext">即座に次回分を生成</option>
+                                <option value="createOnDue">期限になったら生成</option>
+                                <option value="reset">リセットして繰り返し</option>
+                            </select>
+                            <small class="form-hint" id="behavior-hint">完了するとすぐに次のタスクが作成されます</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 隠しフィールド（編集時のID保持） -->
+                <input type="hidden" id="todo-id" name="id">
+
+                <!-- アクション -->
+                <div class="modal-actions">
+                    <button type="button" id="btn-cancel" class="btn-secondary">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 確認ダイアログ -->
+    <div id="confirm-dialog" class="modal" role="dialog" aria-labelledby="confirm-title" aria-hidden="true">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="confirm-title">確認</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">この操作を実行しますか？</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="btn-secondary">
+                    キャンセル
+                </button>
+                <button id="confirm-ok" class="btn-danger">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- サブタスク警告ダイアログ -->
+    <div id="subtask-warning-dialog" class="modal" role="dialog" aria-labelledby="subtask-warning-title" aria-hidden="true">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="subtask-warning-title">確認</h2>
+            </div>
+            <div class="modal-body">
+                <p id="subtask-warning-message">このタスクには未完了のサブタスクがあります。</p>
+            </div>
+            <div class="modal-actions">
+                <button id="subtask-warning-cancel" class="btn-secondary">
+                    キャンセル
+                </button>
+                <button id="complete-all-subtasks" class="btn-primary">
+                    すべて完了にする
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- グループ名入力モーダル -->
+    <div id="group-modal" class="modal" role="dialog" aria-labelledby="group-modal-title" aria-hidden="true">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="group-modal-title">新しいグループ</h2>
+                <button id="group-modal-close" class="btn-close" aria-label="モーダルを閉じる">&times;</button>
+            </div>
+            <form id="group-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="group-name">
+                            グループ名 <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="group-name"
+                            name="name"
+                            class="form-input"
+                            required
+                            maxlength="30"
+                            placeholder="グループ名を入力"
+                            aria-required="true"
+                        >
+                    </div>
+                    <input type="hidden" id="group-id" name="id">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="group-cancel" class="btn-secondary">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- タグ管理モーダル -->
+    <div id="tag-modal" class="modal" role="dialog" aria-labelledby="tag-modal-title" aria-hidden="true">
+        <div class="modal-content modal-medium">
+            <div class="modal-header">
+                <h2 id="tag-modal-title">タグ管理</h2>
+                <button id="tag-modal-close" class="btn-close" aria-label="モーダルを閉じる">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 新規タグ追加 -->
+                <div class="form-group">
+                    <label for="new-tag-manage-input">新しいタグ</label>
+                    <div class="new-tag-row">
+                        <input
+                            type="text"
+                            id="new-tag-manage-input"
+                            class="form-input"
+                            placeholder="タグ名を入力"
+                            maxlength="20"
+                        >
+                        <button type="button" id="btn-add-tag-manage" class="btn-primary">追加</button>
+                    </div>
+                </div>
+
+                <!-- 既存タグ一覧 -->
+                <div class="form-group">
+                    <label>既存のタグ</label>
+                    <div id="tag-manage-list" class="tag-manage-list">
+                        <!-- タグ一覧はJSで動的に追加 -->
+                        <p class="no-tags-message">タグがありません</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="tag-modal-done" class="btn-primary">完了</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- タグ編集モーダル -->
+    <div id="tag-edit-modal" class="modal" role="dialog" aria-labelledby="tag-edit-modal-title" aria-hidden="true">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2 id="tag-edit-modal-title">タグを編集</h2>
+                <button id="tag-edit-modal-close" class="btn-close" aria-label="モーダルを閉じる">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tag-edit-input">タグ名</label>
+                    <input
+                        type="text"
+                        id="tag-edit-input"
+                        class="form-input"
+                        maxlength="20"
+                    >
+                    <input type="hidden" id="tag-edit-original">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="tag-edit-cancel" class="btn-secondary">キャンセル</button>
+                <button type="button" id="tag-edit-save" class="btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScriptファイル -->
+    <script src="js/storage.js"></script>
+    <script src="js/todo.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
